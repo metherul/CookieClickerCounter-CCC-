@@ -8,3 +8,8 @@ C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\obj\Debug\Cooki
 C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\obj\Debug\CookieClickerCounter_CCC.pdb
 C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\Newtonsoft.Json.dll
 C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\Newtonsoft.Json.xml
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\Nancy.dll
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\Nancy.Hosting.Self.dll
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\Nancy.xml
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\Nancy.Hosting.Self.xml
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\Nancy.Linker.dll

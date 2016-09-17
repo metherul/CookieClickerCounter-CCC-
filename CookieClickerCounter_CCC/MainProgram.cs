@@ -24,36 +24,109 @@ namespace CookieClickerCounter_CCC
 
         public void Start()
         {
-            //SetupDatabase();
-            UpdateDatabase("866980", "9500", "20", "2139013290901");
+            // Start the server
+            WebServer server = new WebServer();
+            server.StartServer();
+
+            //AddDatabaseUser("Ethan Green", "866980");
+            //UpdateDatabaseUser("Jack Johnson", "88484848", "88881", "20", Console.ReadLine());
+            //SetUserStatus("99", "password", "true");
+            //DeleteUser("Jack Johnson", "88484848", "password");
         }
 
-        public void SetupDatabase()
+        public void AddDatabaseUser(string _studentName, string _studentID)
         {
-            List<User> userList = new List<User>();
-            User user = new User();
-            bool isRunning = true;
-
-            user = new User();
-            user.Initialize("Ethan Green", "866980");
-
-            userList.Add(user);
-
-            string jsonString = JsonConvert.SerializeObject(userList, Formatting.Indented);
-
-            File.WriteAllText(databaseLocation, jsonString);
-        }
-
-        public void UpdateDatabase(string _studentID, string _cookieCount, string _cookiesPerSecond, string _saveString)
-        {
-            int counter = 0;
+            User user;
 
             string jsonData = File.ReadAllText(databaseLocation);
-            string studentName;
+            string studentName = _studentName;
+            string studentID = _studentID;
+            string jsonString;
+
+            dynamic jsonDocument = null;
+
+            if (new FileInfo(databaseLocation).Length > 0)
+            {
+                jsonDocument = JsonConvert.DeserializeObject<List<User>>(jsonData);
+
+                Console.WriteLine("Checking data");
+
+                // Check to make sure no dupes exist in the database. If there are no matches, continue on to writing the new User object to file
+                foreach (dynamic userObject in jsonDocument)
+                {
+                    if ((userObject.StudentID == studentID) && (userObject.Name == studentName))
+                    {
+                        Console.WriteLine("Found match");
+
+                        return;
+                    }
+                }
+
+                // If the system finds no matches, continue on with the script
+                user = new User();
+                user.Initialize(studentName, studentID);
+
+                jsonDocument.Add(user);
+
+                jsonString = JsonConvert.SerializeObject(jsonDocument, Formatting.Indented);
+
+                File.WriteAllText(databaseLocation, jsonString);
+            }
+
+            // So it doesn't crash when the database is empty
+            else if (new FileInfo(databaseLocation).Length == 0)
+            {
+                jsonDocument = new List<User>();
+
+                user = new User();
+                user.Initialize(studentName, studentID);
+
+                jsonDocument.Add(user);
+
+                jsonString = JsonConvert.SerializeObject(jsonDocument, Formatting.Indented);
+                File.WriteAllText(databaseLocation, jsonString);
+            }
+        }
+
+        public void UpdateDatabaseUser(string _studentName, string _studentID, string _cookieCount, string _cookiesPerSecond, string _saveString)
+        {
+            User user = new User();
+
+            string jsonData = File.ReadAllText(databaseLocation);
+            string studentName = _studentName;
             string studentID = _studentID;
             string cookieCount = _cookieCount;
             string cookiesPerSecond = _cookiesPerSecond;
             string saveString = _saveString;
+            string jsonString;
+
+            dynamic jsonDocument = JsonConvert.DeserializeObject<List<User>>(jsonData);
+
+            foreach (dynamic userObject in jsonDocument)
+            {
+                if ((userObject.StudentID == studentID) && (userObject.Name == studentName))
+                {
+                    userObject.Update(cookieCount, cookiesPerSecond, saveString);
+
+                    jsonString = JsonConvert.SerializeObject(jsonDocument, Formatting.Indented);
+                    File.WriteAllText(databaseLocation, jsonString);
+
+                    break;
+                }
+            }
+        }
+
+        public void SetUserStatus(string _studentID, string _password, string _activeValue)
+        {
+            // THIS IS USED FOR REMOVING OR BANNING A USER FROM THE DATABASE. USE THIS IF YOU WANT TO BLOCK SOMEONE FROM USING THE PROGRAM, 
+            // AND USE DELETEUSER TO REMOVE A STUDENT FROM THE DATABASE
+
+            int counter = 0;
+
+            string jsonData = File.ReadAllText(databaseLocation);
+            string studentID = _studentID;
+            string password = _password;
+            string activeValue = _activeValue;
 
             bool isRunning = true;
 
@@ -70,67 +143,38 @@ namespace CookieClickerCounter_CCC
                     counter++;
             }
 
-            studentName = jsonDocument[counter].Name;
+            jsonDocument[counter].Active = activeValue;
 
-            // Oh god
-            // Cookie count
-
-            if (jsonDocument[counter].CookieCount != null)
-            {
-                jsonDocument[counter].CookieCountArchive.Add(jsonDocument[counter].CookieCount);
-                jsonDocument[counter].CookieCount = cookieCount;
-            }
-
-            else
-                jsonDocument[counter].CookieCount = cookieCount;
-
-            // Cookies per second
-
-            if (jsonDocument[counter].CookiesPerSecond != null)
-            {
-                jsonDocument[counter].CookiesPerSecondArchive.Add(jsonDocument[counter].CookieCount);
-                jsonDocument[counter].CookiesPerSecond = cookiesPerSecond;
-            }
-
-            else
-                jsonDocument[counter].CookiesPerSecond = cookiesPerSecond;
-
-            // SaveString
-
-            if (jsonDocument[counter].SaveString != null)
-            {
-                jsonDocument[counter].SaveStringArchive.Add(jsonDocument[counter].SaveString);
-                jsonDocument[counter].SaveString = saveString;
-            }
-
-            else
-                jsonDocument[counter].SaveString = saveString;
-
-            // TimeStamp
-
-            if (jsonDocument[counter].TimeStamp != null)
-            {
-                jsonDocument[counter].TimeStampArchive.Add(jsonDocument[counter].TimeStamp);
-                jsonDocument[counter].TimeStamp = DateTime.Now.ToString();
-            }
-
-            else
-                jsonDocument[counter].TimeStamp = DateTime.Now.ToString();
-
-            string jsonString = JsonConvert.SerializeObject(jsonDocument, Formatting.Indented);
-
-            File.WriteAllText(databaseLocation, jsonString);
-
+            string jsonOutput = JsonConvert.SerializeObject(jsonDocument, Formatting.Indented);
+            File.WriteAllText(databaseLocation, jsonOutput);
         }
 
-        public void ClearDatabase()
+        public void DeleteUser(string _studentName, string _studentID, string _password)
         {
-            bool run = false;
+            User user;
 
-            if (run)
+            int counter = 0;
+
+            string jsonData = File.ReadAllText(databaseLocation);
+            string studentName = _studentName;
+            string studentID = _studentID;
+            string jsonString;
+
+            bool isRunning = true;
+            bool foundMatch = false;
+
+            dynamic jsonDocument = JsonConvert.DeserializeObject<List<User>>(jsonData);
+
+            for (int i = 0; i < jsonDocument.Count; i++)
             {
-                File.Delete(databaseLocation);
+                if (jsonDocument[i].StudentID == studentID && jsonDocument[i].Name == studentName)
+                {
+                    jsonDocument.RemoveAt(i);
+                }
             }
+
+            string jsonOutput = JsonConvert.SerializeObject(jsonDocument, Formatting.Indented);
+            File.WriteAllText(databaseLocation, jsonOutput);
         }
     }
 }

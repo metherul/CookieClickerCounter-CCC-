@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CookieClickerCounter_CCC
 {
-    [JsonObject(Title = "User")]
     public class User
     {
+        public string Active { get; set; }
         public string Name { get; set; }
         public string StudentID { get; set; }
         public string CookieCount { get; set; }
@@ -33,32 +33,37 @@ namespace CookieClickerCounter_CCC
         {
             Name = _name;
             StudentID = _studentID;
+            Active = "true";
         }
 
         public void Update(string _cookieCount, string _cookiesPerSecond, string _saveString)
         {
-            if (CookieCount != string.Empty)
+            if (CookieCount != null)
                 CookieCountArchive.Add(CookieCount);
 
-            if (CookiesPerSecond != string.Empty)
+            if (CookiesPerSecond != null)
                 CookiesPerSecondArchive.Add(CookiesPerSecond);
 
-            if (SaveString != string.Empty)
+            if (SaveString != null)
                 SaveStringArchive.Add(SaveString);
 
-            if (TimeStamp != string.Empty)
+            if (TimeStamp != null)
                 TimeStampArchive.Add(TimeStamp);
+
+            if (CookieCount != null)
+                CookieCountArchive.Add(CookieCount);
+
 
             CookieCount = _cookieCount;
             CookiesPerSecond = _cookiesPerSecond;
             SaveString = _saveString;
             TimeStamp = DateTime.Now.ToString();
         }
-    }
 
-    public class RootObject
-    {
-        public List<User> Users { get; set; }
+        public void Disable()
+        {
+            Active = "false";
+        }
     }
 }
 
