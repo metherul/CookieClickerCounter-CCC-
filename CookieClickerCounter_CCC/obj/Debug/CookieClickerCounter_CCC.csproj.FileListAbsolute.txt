@@ -1,0 +1,10 @@
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\CookieClickerCounter_CCC.exe.config
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\CookieClickerCounter_CCC.exe
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\CookieClickerCounter_CCC.pdb
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\Colorful.Console.dll
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\Colorful.Console.xml
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\obj\Debug\CookieClickerCounter_CCC.csprojResolveAssemblyReference.cache
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\obj\Debug\CookieClickerCounter_CCC.exe
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\obj\Debug\CookieClickerCounter_CCC.pdb
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\Newtonsoft.Json.dll
+C:\C# Projects\CookieClickerCounter_CCC\CookieClickerCounter_CCC\bin\Debug\Newtonsoft.Json.xml
