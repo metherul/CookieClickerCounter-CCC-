@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>CCC</title>
+    <link rel="stylesheet" href="css/style.css">
+	
+	<script>
+	var millisecondsToWait = 1000;
+	
+	function timedText() {
+		setTimeout(function(){document.getElementById("redirectTimer").innerHtml="Redirect in 2"}, 1000);
+		setTimeout(function(){document.getElementById("redirectTimer").innerHtml="Redirect in 1"}, 2000);
+		setTimeout(function(){window.location = "/home"}, 3000);
+	}
+
+	window.onload = function () {
+		timedText();
+	};
+	</script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <h1 id="headerTest">User not found in database</h1>
+			<h3 id="redirectTimer">Redirecting to the homepage</h3>
+        </div>
+        <ul class="bg-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>

@@ -148,17 +148,9 @@ namespace CookieClickerCounter_CCC
 
         public void DeleteUser(string _studentName, string _studentID, string _password)
         {
-            User user;
-
-            int counter = 0;
-
             string jsonData = File.ReadAllText(databaseLocation);
             string studentName = _studentName;
             string studentID = _studentID;
-            string jsonString;
-
-            bool isRunning = true;
-            bool foundMatch = false;
 
             dynamic jsonDocument = JsonConvert.DeserializeObject<List<User>>(jsonData);
 

@@ -49,6 +49,16 @@ namespace CookieClickerCounter_CCC
             {
                 return Response.AsFile("Content/index.html", "text/html");
             };
+
+            Get["/user-not-found"] = _ =>
+            {
+                return Response.AsFile("Content/user-not-found.html");
+            };
+
+            Get["/admin-console"] = _ =>
+            {
+                return Response.AsFile("Content/admin-console.html");
+            };
             
             Post["/home"] = parameters =>
             {
@@ -70,21 +80,23 @@ namespace CookieClickerCounter_CCC
                 Console.WriteLine(cookiesPerSecond);
                 Console.WriteLine(saveString);
 
-                if (!program.doesUserExist(studentName, studentID))
+                if (program.doesUserExist(studentName, studentID))
                 {
-                    Console.WriteLine("Creating user");
-                    program.AddDatabaseUser(studentName, studentID);
+                    // Update the user's info in the database
+                    program.UpdateDatabaseUser(studentName, studentID, cookieCount, cookiesPerSecond, saveString);
+
+                    Console.WriteLine("Data pass");
+                    Console.WriteLine("\n\n------------------------------------------------ \n\n");
+
+                    Thread.Sleep(5000);
+
+                    return Response.AsRedirect("/home");
                 }
 
-                // Update the user's info in the database
-                program.UpdateDatabaseUser(studentName, studentID, cookieCount, cookiesPerSecond, saveString);
-
-                Console.WriteLine("Data pass");
+                Console.WriteLine("User not found, redirecting");
                 Console.WriteLine("\n\n------------------------------------------------ \n\n");
 
-                Thread.Sleep(2000);
-
-                return Response.AsRedirect("/home");
+                return Response.AsRedirect("/user-not-found");
             };
         }
     }
