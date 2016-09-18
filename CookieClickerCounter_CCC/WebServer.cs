@@ -4,6 +4,7 @@ using Nancy.Extensions;
 using Nancy.Hosting.Self;
 using System;
 using Console = Colorful.Console;
+using System.Threading;
 
 namespace CookieClickerCounter_CCC
 {
@@ -81,7 +82,9 @@ namespace CookieClickerCounter_CCC
                 Console.WriteLine("Data pass");
                 Console.WriteLine("\n\n------------------------------------------------ \n\n");
 
-                return Response.AsText("SUCCESS");
+                Thread.Sleep(2000);
+
+                return Response.AsRedirect("/home");
             };
         }
     }

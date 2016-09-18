@@ -1,18 +1,40 @@
 <!DOCTYPE html>
+<html>
 
-<form method="post">
-  <fieldset>
-    <legend>Personal information:</legend>
-    Name:<br>
-    <input type="text" name="studentName"<br><br>
-    Student ID:<br>
-    <input type="text" name="studentID"<br><br>
-	Cookie Count:<br>
-    <input type="text" name="cookieCount"<br><br>
-	Cookies Per Second:<br>
-    <input type="text" name="cookiesPerSecond"<br><br>
-    Save:<br>
-    <input type="text" name="saveString"<br><br><br>
-    <input type="submit" value="Submit">
-  </fieldset>
-</form>
+<head>
+    <meta charset="UTF-8">
+    <title>CCC</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <h1 id="headerTest">Welcome</h1>
+            <form method="post" class="form" id="formName">
+                <input type="text" placeholder="Name" name="studentName" autocomplete="off">
+                <input type="text" placeholder="Student ID" name="studentID" autocomplete="off">
+                <input type="text" placeholder="Cookie Count" name="cookieCount" autocomplete="off">
+                <input type="text" placeholder="Cookies Per Second" name="cookiesPerSecond" autocomplete="off">
+                <input type="text" placeholder="Save Code" name="saveString"autocomplete="off">
+                <button type="submit" id="login-button" form="formName">Save</button>
+            </form>
+        </div>
+        <ul class="bg-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
