@@ -1,21 +1,18 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CookieClickerCounter_CCC
 {
     public class User
     {
-        public string Active { get; set; }
         public string Name { get; set; }
         public string StudentID { get; set; }
         public string CookieCount { get; set; }
         public string CookiesPerSecond { get; set; }
         public string SaveString { get; set; }
         public string TimeStamp { get; set; }
+        public string Active { get; set; }
+        public int AccessCount { get; set; }
         public List<object> CookieCountArchive { get; set; }
         public List<object> CookiesPerSecondArchive { get; set; }
         public List<object> SaveStringArchive { get; set; }
@@ -34,6 +31,7 @@ namespace CookieClickerCounter_CCC
             Name = _name;
             StudentID = _studentID;
             Active = "true";
+            AccessCount = 0;
         }
 
         public void Update(string _cookieCount, string _cookiesPerSecond, string _saveString)
@@ -49,15 +47,12 @@ namespace CookieClickerCounter_CCC
 
             if (TimeStamp != null)
                 TimeStampArchive.Add(TimeStamp);
-
-            if (CookieCount != null)
-                CookieCountArchive.Add(CookieCount);
-
-
+            
             CookieCount = _cookieCount;
             CookiesPerSecond = _cookiesPerSecond;
             SaveString = _saveString;
             TimeStamp = DateTime.Now.ToString();
+            AccessCount++;
         }
 
         public void Disable()

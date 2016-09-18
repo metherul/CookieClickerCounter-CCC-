@@ -1,12 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Console = Colorful.Console;
 using System.IO;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using Console = Colorful.Console;
 
 namespace CookieClickerCounter_CCC
 {
@@ -28,10 +24,11 @@ namespace CookieClickerCounter_CCC
             WebServer server = new WebServer();
             server.StartServer();
 
-            //AddDatabaseUser("Ethan Green", "866980");
-            //UpdateDatabaseUser("Jack Johnson", "88484848", "88881", "20", Console.ReadLine());
+            //AddDatabaseUser("Sombra", "23");
+            //UpdateDatabaseUser("Ethan Green", "866980", "89213980891208901238903129801238982390089213890", "20008239801239080000", "wad48d48w6a468adw1564adw1356adw689+dsa456csz46545da456w6a54d456s546ad456wa456");
             //SetUserStatus("99", "password", "true");
-            //DeleteUser("Jack Johnson", "88484848", "password");
+            //DeleteUser("Ethan Green", "228822", "password");
+            //doesUserExist("Ethan Green", "866980");
         }
 
         public void AddDatabaseUser(string _studentName, string _studentID)
@@ -175,6 +172,36 @@ namespace CookieClickerCounter_CCC
 
             string jsonOutput = JsonConvert.SerializeObject(jsonDocument, Formatting.Indented);
             File.WriteAllText(databaseLocation, jsonOutput);
+        }
+
+        public bool doesUserExist(string _studentName, string _studentID)
+        {
+            string jsonData = File.ReadAllText(databaseLocation);
+            string studentName = _studentName;
+            string studentID = _studentID;
+
+            dynamic jsonDocument = null;
+
+            if (new FileInfo(databaseLocation).Length > 0)
+            {
+                jsonDocument = JsonConvert.DeserializeObject<List<User>>(jsonData);
+
+                Console.WriteLine("Checking data");
+
+                // Check to make sure no dupes exist in the database. If there are no matches, continue on to writing the new User object to file
+                foreach (dynamic userObject in jsonDocument)
+                {
+                    if ((userObject.StudentID == studentID) && (userObject.Name == studentName))
+                    {
+                        Console.WriteLine("Match found");
+
+                        return true;
+                    }
+                }
+            }
+
+            Console.WriteLine("Match not found");
+            return false;
         }
     }
 }
