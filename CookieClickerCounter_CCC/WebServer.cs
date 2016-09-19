@@ -5,13 +5,13 @@ using Nancy.Hosting.Self;
 using System;
 using Console = Colorful.Console;
 using System.Threading;
+using System.IO;
 
 namespace CookieClickerCounter_CCC
 {
     class WebServer
     {
         public NancyHost host;
-        public MainProgram program;
 
         public int port = 5000;
 
@@ -28,15 +28,19 @@ namespace CookieClickerCounter_CCC
             host.Start();
 
             Console.WriteLine("Listening on port: " + port);
-            Console.ReadLine();
+            Console.WriteLine("\n\n------------------------------------------------ \n\n");
+            while (true)
+            {
 
-            host.Stop();
+            }
         }
     }
 
     public class Modules : NancyModule
     {
         MainProgram program = new MainProgram();
+
+        string databaseLocation = AppDomain.CurrentDomain.BaseDirectory + "database.json";
 
         public Modules()
         {
@@ -59,6 +63,11 @@ namespace CookieClickerCounter_CCC
             {
                 return Response.AsFile("Content/admin-console.html");
             };
+
+            Get["/database"] = _ =>
+            {
+                return Response.AsText(File.ReadAllText(databaseLocation));
+            };
             
             Post["/home"] = parameters =>
             {
@@ -70,8 +79,7 @@ namespace CookieClickerCounter_CCC
                 string cookieCount = array[2].Replace("cookieCount=", "").Replace("+", " ");
                 string cookiesPerSecond = array[3].Replace("cookiesPerSecond=", "").Replace("+", " ");
                 string saveString = array[4].Replace("saveString=", "").Replace("+", " ");
-
-
+                
                 Console.WriteLine("Captured parameters");
 
                 Console.WriteLine(studentName);
@@ -80,23 +88,28 @@ namespace CookieClickerCounter_CCC
                 Console.WriteLine(cookiesPerSecond);
                 Console.WriteLine(saveString);
 
-                if (program.doesUserExist(studentName, studentID))
+                if (!program.doesUserExist(studentName, studentID))
                 {
-                    // Update the user's info in the database
-                    program.UpdateDatabaseUser(studentName, studentID, cookieCount, cookiesPerSecond, saveString);
+                    //Add a new user into the database
+                    program.AddDatabaseUser(studentName, studentID);
 
-                    Console.WriteLine("Data pass");
-                    Console.WriteLine("\n\n------------------------------------------------ \n\n");
-
-                    Thread.Sleep(5000);
-
-                    return Response.AsRedirect("/home");
+                    Console.WriteLine("New user added to the database");
+                    
                 }
 
-                Console.WriteLine("User not found, redirecting");
+                // Update the user's info in the database
+                program.UpdateDatabaseUser(studentName, studentID, cookieCount, cookiesPerSecond, saveString);
+
+                Console.WriteLine("Data pass");
                 Console.WriteLine("\n\n------------------------------------------------ \n\n");
 
-                return Response.AsRedirect("/user-not-found");
+                // I have this here because I hate myself
+                while(true)
+                {
+
+                }
+
+                return Response.AsRedirect("/home");
             };
         }
     }
