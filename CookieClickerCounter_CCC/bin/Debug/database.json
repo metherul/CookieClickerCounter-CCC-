@@ -1,72 +1,21 @@
 [
   {
-    "Name": "Ethan Green",
+    "StudentName": "Ethan Green",
     "StudentID": "866980",
-    "CookieCount": "92138391280",
-    "CookiesPerSecond": "123939812",
-    "SaveString": "8923198213312980132",
-    "TimeStamp": "9/18/2016 7:41:31 PM",
-    "Active": "true",
-    "AccessCount": 2,
-    "CookieCountArchive": [
-      "68"
-    ],
-    "CookiesPerSecondArchive": [
-      "0"
-    ],
-    "SaveStringArchive": [
-      "Mi4wMDJ8fDE0NzQyMjQ0ODQxODI7MTQ3NDIyNDQ4NDE5MzsxNDc0MjMwNTI0NTAxO1N3ZWV0IERvbHBoaW58w6bCmMKABnw2ODs2ODs2ODswOzY4OzA7MDswOzA7MDswOzA7MDswOzA7MDswOzA7MDswOzA7MDs7MDswOzA7MDswOzA7MDstMTstMTstMTstMTstMTswOzA7MDswOzUwOzA7MDt8MCwwLDAsMDswLDAsMCwwOzAsMCwwLDA7MCwwLDAsMDswLDAsMCwwOzAsMCwwLDA7MCwwLDAsMDswLDAsMCwwOzAsMCwwLDA7MCwwLDAsMDswLDAsMCwwOzAsMCwwLDA7MCwwLDAsMDswLDAsMCwwO3zDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDpMKAwoDDocKAwoB8w6bCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKAw6TCgMKA%2521END%2521"
-    ],
-    "TimeStampArchive": [
-      "9/18/2016 4:29:19 PM"
-    ]
-  },
-  {
-    "Name": "John Green",
-    "StudentID": "980123980312890",
-    "CookieCount": "908123908389012",
-    "CookiesPerSecond": "089089123098",
-    "SaveString": "908890312908",
-    "TimeStamp": "9/18/2016 4:37:58 PM",
+    "BakeryName": "The Boss's bakery",
+    "GameVersion": "2.002",
+    "CookieCount": "5.96961232585747e+23",
+    "CookieCountAllTime": "1.8073236211381496e+25",
+    "StartTime": "8/24/2016 6:39:44 PM",
+    "SaveTime": "9/9/2016 3:40:53 PM",
+    "AccessTimeStamp": "9/25/2016 4:26:53 PM",
     "Active": "true",
     "AccessCount": 1,
+    "SaveCode": null,
     "CookieCountArchive": [],
-    "CookiesPerSecondArchive": [],
-    "SaveStringArchive": [],
-    "TimeStampArchive": []
-  },
-  {
-    "Name": "",
-    "StudentID": "",
-    "CookieCount": "",
-    "CookiesPerSecond": "",
-    "SaveString": "",
-    "TimeStamp": "9/18/2016 7:38:24 PM",
-    "Active": "true",
-    "AccessCount": 5,
-    "CookieCountArchive": [
-      "",
-      "",
-      "",
-      ""
-    ],
-    "CookiesPerSecondArchive": [
-      "",
-      "",
-      "",
-      ""
-    ],
-    "SaveStringArchive": [
-      "",
-      "",
-      "",
-      ""
-    ],
-    "TimeStampArchive": [
-      "9/18/2016 4:39:18 PM",
-      "9/18/2016 7:16:55 PM",
-      "9/18/2016 7:37:43 PM",
-      "9/18/2016 7:38:16 PM"
-    ]
+    "CookieCountAllTimeArchive": [],
+    "SaveTimeArchive": [],
+    "AccessTimeStampArchive": [],
+    "SaveCodeArchive": []
   }
 ]

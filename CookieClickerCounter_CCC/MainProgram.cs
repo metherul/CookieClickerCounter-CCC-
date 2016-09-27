@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Console = Colorful.Console;
 
 namespace CookieClickerCounter_CCC
@@ -31,13 +32,17 @@ namespace CookieClickerCounter_CCC
             //doesUserExist("Ethan Green", "866980");
         }
 
-        public void AddDatabaseUser(string _studentName, string _studentID)
+        public void AddDatabaseUser(string _studentName, string _studentID, string _bakeryName, string _gameVersion, string _startTime, string _saveCode)
         {
             User user;
 
             string jsonData = File.ReadAllText(databaseLocation);
             string studentName = _studentName;
             string studentID = _studentID;
+            string bakeryName = _bakeryName;
+            string gameVersion = _gameVersion;
+            string startTime = _startTime;
+            string saveCode = _saveCode;
             string jsonString;
 
             dynamic jsonDocument = null;
@@ -61,7 +66,7 @@ namespace CookieClickerCounter_CCC
 
                 // If the system finds no matches, continue on with the script
                 user = new User();
-                user.Initialize(studentName, studentID);
+                user.Initialize(studentName, studentID, bakeryName, gameVersion, startTime, saveCode);
 
                 jsonDocument.Add(user);
 
@@ -76,7 +81,7 @@ namespace CookieClickerCounter_CCC
                 jsonDocument = new List<User>();
 
                 user = new User();
-                user.Initialize(studentName, studentID);
+                user.Initialize(studentName, studentID, bakeryName, gameVersion, startTime, saveCode);
 
                 jsonDocument.Add(user);
 
@@ -85,25 +90,29 @@ namespace CookieClickerCounter_CCC
             }
         }
 
-        public void UpdateDatabaseUser(string _studentName, string _studentID, string _cookieCount, string _cookiesPerSecond, string _saveString)
+        public void UpdateDatabaseUser(string _studentName, string _studentID, string _bakeryName, string _gameVersion, string _saveCode, string _startTime, string _saveTime, string _cookieCount, string _cookieCountAllTime)
         {
             User user = new User();
 
             string jsonData = File.ReadAllText(databaseLocation);
             string studentName = _studentName;
             string studentID = _studentID;
+            string bakeryName = _bakeryName;
+            string gameVersion = _gameVersion;
+            string saveCode = _saveCode;
+            string startTime = _startTime;
+            string saveTime = _saveTime;
             string cookieCount = _cookieCount;
-            string cookiesPerSecond = _cookiesPerSecond;
-            string saveString = _saveString;
+            string cookieCountAllTime = _cookieCountAllTime;
             string jsonString;
 
             dynamic jsonDocument = JsonConvert.DeserializeObject<List<User>>(jsonData);
 
             foreach (dynamic userObject in jsonDocument)
             {
-                if ((userObject.StudentID == studentID) && (userObject.Name == studentName))
+                if ((userObject.StudentID == studentID) && (userObject.StudentName == studentName))
                 {
-                    userObject.Update(cookieCount, cookiesPerSecond, saveString);
+                    userObject.Update(saveTime, cookieCount, cookieCountAllTime, saveCode);
 
                     jsonString = JsonConvert.SerializeObject(jsonDocument, Formatting.Indented);
                     File.WriteAllText(databaseLocation, jsonString);
@@ -183,7 +192,7 @@ namespace CookieClickerCounter_CCC
                 // Check to make sure no dupes exist in the database. If there are no matches, continue on to writing the new User object to file
                 foreach (dynamic userObject in jsonDocument)
                 {
-                    if ((userObject.StudentID == studentID) && (userObject.Name == studentName))
+                    if ((userObject.StudentID == studentID) && (userObject.StudentName == studentName))
                     {
                         Console.WriteLine("Match found");
 
@@ -195,5 +204,103 @@ namespace CookieClickerCounter_CCC
             Console.WriteLine("Match not found");
             return false;
         }
+
+        public string[] DecodeSaveCode(string saveCode)
+        {
+            string gameVersion;
+            string startTime;
+            string saveTime;
+            string bakeryName;
+            string cookieCount;
+            string cookieCountAllTime;
+
+            string temp;
+
+            string[] decodedArray = DecodeBase64(saveCode);
+            string[] decodedInformation = new string[5];
+
+            foreach (string i in decodedArray)
+            {
+                Console.WriteLine(i.ToString());
+            }
+
+            Console.WriteLine("\n");
+
+            // First off we're going to get the gameVersion
+            temp = decodedArray[0];
+            gameVersion = temp.Substring(0, temp.IndexOf("|"));
+            Console.WriteLine("GAME VERSION: " + gameVersion);
+
+            startTime = temp.Substring(temp.IndexOf("|") + 2);
+            startTime = FromUnixTime(Convert.ToDouble(startTime));
+            Console.WriteLine("START TIME: " + startTime);
+
+            temp = decodedArray[2];
+            saveTime = FromUnixTime(Convert.ToDouble(temp));
+            Console.WriteLine("SAVE TIME: " + saveTime);
+
+            temp = decodedArray[3];
+            bakeryName = temp.Substring(0, temp.IndexOf("|")) + "'s bakery";
+            Console.WriteLine("BAKERY NAME: " + bakeryName + "'s bakery");
+
+            temp = decodedArray[3];
+            cookieCount = temp.Substring(temp.IndexOf("|") + 1);
+            cookieCount = cookieCount.Substring(cookieCount.IndexOf("|") + 1);
+            
+            if (!cookieCount.Contains("+"))
+            {
+                cookieCount = Math.Round(Convert.ToDecimal(cookieCount)).ToString();
+            }
+
+            Console.WriteLine("COOKIE COUNT: " + cookieCount);
+
+            temp = decodedArray[4];
+            cookieCountAllTime = temp.Substring(temp.IndexOf("|") + 1);
+
+            if (!cookieCountAllTime.Contains("+"))
+            {
+                cookieCountAllTime = Math.Round(Convert.ToDecimal(cookieCountAllTime)).ToString();
+            }
+
+            Console.WriteLine("COOKIES COUNT ALL TIME: " + cookieCountAllTime);
+
+            // Stick this all into an array
+            decodedArray[0] = gameVersion;
+            decodedArray[1] = startTime;
+            decodedArray[2] = saveTime;
+            decodedArray[3] = bakeryName;
+            decodedArray[4] = cookieCount;
+            decodedArray[5] = cookieCountAllTime;
+
+            return decodedArray;
+        }
+
+        public string[] DecodeBase64(string base64)
+        {
+            // First we have to sanitize the string to make sure that all padding and certain characters are removed
+            string base64String = base64.Replace("%2521END%2521", "").Replace("%253D", "=").Replace("%2F", @"/");
+            string decodedString;
+
+            Console.WriteLine(base64String);
+
+            string[] array;
+
+            byte[] data;
+
+            data = Convert.FromBase64String(base64String);
+            decodedString = Encoding.UTF8.GetString(data);
+
+            array = decodedString.Split(';');
+
+            return array;
+        }
+
+        public string FromUnixTime(double unixTimeStamp)
+        {
+            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddMilliseconds(unixTimeStamp).ToLocalTime();
+            return dtDateTime.ToString();
+        }
     }
 }
+  

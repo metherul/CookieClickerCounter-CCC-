@@ -4,7 +4,6 @@ using Nancy.Extensions;
 using Nancy.Hosting.Self;
 using System;
 using Console = Colorful.Console;
-using System.Threading;
 using System.IO;
 
 namespace CookieClickerCounter_CCC
@@ -73,41 +72,38 @@ namespace CookieClickerCounter_CCC
             {
                 var request = Request.Body;
                 string[] array = request.AsString().Split('&');
+                string[] decodedArray = program.DecodeSaveCode(array[2].Replace("saveString=", "").Replace("+", " "));
 
                 string studentName = array[0].Replace("studentName=", "").Replace("+", " ");
                 string studentID = array[1].Replace("studentID=", "").Replace("+", " ");
-                string cookieCount = array[2].Replace("cookieCount=", "").Replace("+", " ");
-                string cookiesPerSecond = array[3].Replace("cookiesPerSecond=", "").Replace("+", " ");
-                string saveString = array[4].Replace("saveString=", "").Replace("+", " ");
-                
+                string saveCode = array[2].Replace("saveString=", "").Replace("+", " ");
+                string gameVersion = decodedArray[0];
+                string startTime = decodedArray[1];
+                string saveTime = decodedArray[2];
+                string bakeryName = decodedArray[3];
+                string cookieCount = decodedArray[4];
+                string cookieCountAllTime = decodedArray[5];
+
                 Console.WriteLine("Captured parameters");
 
                 Console.WriteLine(studentName);
                 Console.WriteLine(studentID);
-                Console.WriteLine(cookieCount);
-                Console.WriteLine(cookiesPerSecond);
-                Console.WriteLine(saveString);
+                Console.WriteLine(saveCode);
 
                 if (!program.doesUserExist(studentName, studentID))
                 {
                     //Add a new user into the database
-                    program.AddDatabaseUser(studentName, studentID);
+                    program.AddDatabaseUser(studentName, studentID, bakeryName, gameVersion, startTime, saveCode);
 
                     Console.WriteLine("New user added to the database");
                     
                 }
 
                 // Update the user's info in the database
-                program.UpdateDatabaseUser(studentName, studentID, cookieCount, cookiesPerSecond, saveString);
+                program.UpdateDatabaseUser(studentName, studentID, bakeryName, gameVersion, saveCode, startTime, saveTime, cookieCount, cookieCountAllTime);
 
                 Console.WriteLine("Data pass");
                 Console.WriteLine("\n\n------------------------------------------------ \n\n");
-
-                // I have this here because I hate myself
-                while(true)
-                {
-
-                }
 
                 return Response.AsRedirect("/home");
             };
