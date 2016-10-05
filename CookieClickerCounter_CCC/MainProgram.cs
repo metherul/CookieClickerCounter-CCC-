@@ -56,7 +56,7 @@ namespace CookieClickerCounter_CCC
                 // Check to make sure no dupes exist in the database. If there are no matches, continue on to writing the new User object to file
                 foreach (dynamic userObject in jsonDocument)
                 {
-                    if ((userObject.StudentID == studentID) && (userObject.Name == studentName))
+                    if ((userObject.StudentID == studentID) && (userObject.StudentName == studentName))
                     {
                         Console.WriteLine("Found match");
 
@@ -165,7 +165,7 @@ namespace CookieClickerCounter_CCC
 
             for (int i = 0; i < jsonDocument.Count; i++)
             {
-                if (jsonDocument[i].StudentID == studentID && jsonDocument[i].Name == studentName)
+                if (jsonDocument[i].StudentID == studentID && jsonDocument[i].StudentName == studentName)
                 {
                     jsonDocument.RemoveAt(i);
                 }
@@ -241,7 +241,7 @@ namespace CookieClickerCounter_CCC
 
             temp = decodedArray[3];
             bakeryName = temp.Substring(0, temp.IndexOf("|")) + "'s bakery";
-            Console.WriteLine("BAKERY NAME: " + bakeryName + "'s bakery");
+            Console.WriteLine("BAKERY NAME: " + bakeryName);
 
             temp = decodedArray[3];
             cookieCount = temp.Substring(temp.IndexOf("|") + 1);
@@ -300,6 +300,15 @@ namespace CookieClickerCounter_CCC
             DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddMilliseconds(unixTimeStamp).ToLocalTime();
             return dtDateTime.ToString();
+        }
+
+        public List<User> GetDatabaseUsers()
+        {
+            string jsonData = File.ReadAllText(databaseLocation);
+
+            dynamic jsonDocument = JsonConvert.DeserializeObject<List<User>>(jsonData);
+
+            return jsonDocument;
         }
     }
 }

@@ -5,6 +5,7 @@ using Nancy.Hosting.Self;
 using System;
 using Console = Colorful.Console;
 using System.IO;
+using System.Collections.Generic;
 
 namespace CookieClickerCounter_CCC
 {
@@ -67,45 +68,67 @@ namespace CookieClickerCounter_CCC
             {
                 return Response.AsText(File.ReadAllText(databaseLocation));
             };
-            
+
+            Get["/stats"] = _ =>
+            {
+                MainProgram main = new MainProgram();
+
+                List<User> list = main.GetDatabaseUsers();
+
+                return View["Content/statistics.html", list];
+            };
+
             Post["/home"] = parameters =>
             {
-                var request = Request.Body;
-                string[] array = request.AsString().Split('&');
-                string[] decodedArray = program.DecodeSaveCode(array[2].Replace("saveString=", "").Replace("+", " "));
-
-                string studentName = array[0].Replace("studentName=", "").Replace("+", " ");
-                string studentID = array[1].Replace("studentID=", "").Replace("+", " ");
-                string saveCode = array[2].Replace("saveString=", "").Replace("+", " ");
-                string gameVersion = decodedArray[0];
-                string startTime = decodedArray[1];
-                string saveTime = decodedArray[2];
-                string bakeryName = decodedArray[3];
-                string cookieCount = decodedArray[4];
-                string cookieCountAllTime = decodedArray[5];
-
-                Console.WriteLine("Captured parameters");
-
-                Console.WriteLine(studentName);
-                Console.WriteLine(studentID);
-                Console.WriteLine(saveCode);
-
-                if (!program.doesUserExist(studentName, studentID))
+                try
                 {
-                    //Add a new user into the database
-                    program.AddDatabaseUser(studentName, studentID, bakeryName, gameVersion, startTime, saveCode);
+                    var request = Request.Body;
+                    string[] array = request.AsString().Split('&');
+                    string[] decodedArray = program.DecodeSaveCode(array[2].Replace("saveString=", "").Replace("+", " "));
 
-                    Console.WriteLine("New user added to the database");
-                    
+                    string studentName = array[0].Replace("studentName=", "").Replace("+", " ");
+                    string studentID = array[1].Replace("studentID=", "").Replace("+", " ");
+                    string saveCode = array[2].Replace("saveString=", "").Replace("+", " ");
+                    string gameVersion = decodedArray[0];
+                    string startTime = decodedArray[1];
+                    string saveTime = decodedArray[2];
+                    string bakeryName = decodedArray[3];
+                    string cookieCount = decodedArray[4];
+                    string cookieCountAllTime = decodedArray[5];
+
+                    if ((studentName == string.Empty) || (studentID == string.Empty))
+                    {
+                        return Response.AsText("Student name / student ID cannot be empty.");
+                    }
+
+                    Console.WriteLine("Captured parameters");
+
+                    Console.WriteLine(studentName);
+                    Console.WriteLine(studentID);
+                    Console.WriteLine(saveCode);
+
+                    if (!program.doesUserExist(studentName, studentID))
+                    {
+                        //Add a new user into the database
+                        program.AddDatabaseUser(studentName, studentID, bakeryName, gameVersion, startTime, saveCode);
+
+                        Console.WriteLine("New user added to the database");
+
+                    }
+
+                    // Update the user's info in the database
+                    program.UpdateDatabaseUser(studentName, studentID, bakeryName, gameVersion, saveCode, startTime, saveTime, cookieCount, cookieCountAllTime);
+
+                    Console.WriteLine("Data pass");
+                    Console.WriteLine("\n\n------------------------------------------------ \n\n");
+
+                    return Response.AsRedirect("/home");
                 }
 
-                // Update the user's info in the database
-                program.UpdateDatabaseUser(studentName, studentID, bakeryName, gameVersion, saveCode, startTime, saveTime, cookieCount, cookieCountAllTime);
-
-                Console.WriteLine("Data pass");
-                Console.WriteLine("\n\n------------------------------------------------ \n\n");
-
-                return Response.AsRedirect("/home");
+                catch
+                {
+                    return Response.AsText("Invalid Save Code");
+                }
             };
         }
     }

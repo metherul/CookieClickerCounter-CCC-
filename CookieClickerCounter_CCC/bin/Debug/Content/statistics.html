@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Statistics Page</title>
+</head>
+<body>
+    <h1>User Statistics</h1>
+    <ul>
+        @Each
+            <li>
+				<h3>@Current.StudentName - @Current.BakeryName</h3>
+				Cookie count: @Current.CookieCount <br/>
+				Cookie count of all time: @Current.CookieCountAllTime <br/>
+				Start time: @Current.StartTime <br/>
+				Save time: @Current.SaveTime <br/>
+				Access count: @Current.AccessCount <br/>
+			</li>
+        @EndEach
+    </ul>
+</body>
+</html>
